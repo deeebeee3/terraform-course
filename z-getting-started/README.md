@@ -20,6 +20,8 @@ Go to “security groups” in left menu under Network & Security - click on the
 
 Add Inbound rule to allow all traffic from myIPAddress
 
+You can also do this by going to VPC and then VPC Dashboard, then clicking on security groups... (make sure region is correct - by selecting from main dropdown eu-west-1)
+
 —————————————————————
 
 Edit instance.tf file (get this from the first-steps folder):
