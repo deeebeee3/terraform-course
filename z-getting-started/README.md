@@ -22,7 +22,7 @@ Add Inbound rule to allow all traffic from myIPAddress
 
 —————————————————————
 
-Edit instance.tf file:
+Edit instance.tf file (get this from the first-steps folder):
 
 provider "aws" {
 access_key = ""
