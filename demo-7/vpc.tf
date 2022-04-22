@@ -1,20 +1,21 @@
 # Internet VPC
+
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
-  instance_tenancy     = "default"
+  cidr_block           = "10.0.0.0/16" # Our VPC can have approx 65K ip addresses
+  instance_tenancy     = "default" # This means we can run multiple instances in the same VPC
   enable_dns_support   = "true"
   enable_dns_hostnames = "true"
-  enable_classiclink   = "false"
+  enable_classiclink   = "false" # We don't want to link our VPC to EC2 Classic
   tags = {
-    Name = "main"
+    Name = "main" # We can see in UI we have a VPC called main
   }
 }
 
-# Subnets
+# Subnets (Public)
 resource "aws_subnet" "main-public-1" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = "true"
+  map_public_ip_on_launch = "true" # When we have an instance, it will get a public IP address on launch
   availability_zone       = "eu-west-1a"
 
   tags = {
@@ -44,10 +45,11 @@ resource "aws_subnet" "main-public-3" {
   }
 }
 
+# Subnets (Private)
 resource "aws_subnet" "main-private-1" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.4.0/24"
-  map_public_ip_on_launch = "false"
+  map_public_ip_on_launch = "false" # If we launch an instance in this subnet we will only get a private IP address
   availability_zone       = "eu-west-1a"
 
   tags = {
@@ -77,7 +79,7 @@ resource "aws_subnet" "main-private-3" {
   }
 }
 
-# Internet GW
+# Create an Internet GW for our public Subnets
 resource "aws_internet_gateway" "main-gw" {
   vpc_id = aws_vpc.main.id
 
@@ -87,8 +89,14 @@ resource "aws_internet_gateway" "main-gw" {
 }
 
 # route tables
+# This route will be pushed to the instances but only if we associate this 
+# route table we created to every single public subnet
 resource "aws_route_table" "main-public" {
   vpc_id = aws_vpc.main.id
+  
+  # All traffic that is not internal
+  # "0.0.0.0/0" means all IP addresses except the ones that match the VPC range
+  # Those will be routed over the Internet GW
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main-gw.id
@@ -99,7 +107,7 @@ resource "aws_route_table" "main-public" {
   }
 }
 
-# route associations public
+# route associations for public subnets
 resource "aws_route_table_association" "main-public-1-a" {
   subnet_id      = aws_subnet.main-public-1.id
   route_table_id = aws_route_table.main-public.id
