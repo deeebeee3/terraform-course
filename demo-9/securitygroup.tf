@@ -13,7 +13,10 @@ resource "aws_security_group" "allow-ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = ["0.0.0.0/0"]
+    
+    cidr_blocks = ["80.47.128.181/32"]
+    # My home public IP address slash 32. Slash 32 means theres just one.
   }
   tags = {
     Name = "allow-ssh"
