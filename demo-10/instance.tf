@@ -12,6 +12,7 @@ resource "aws_instance" "example" {
   key_name = aws_key_pair.mykeypair.key_name
 
   # user data
+  # can use a script string here if wanted..
   user_data = data.template_cloudinit_config.cloudinit-example.rendered
 }
 
@@ -28,6 +29,6 @@ resource "aws_volume_attachment" "ebs-volume-1-attachment" {
   device_name  = var.INSTANCE_DEVICE_NAME
   volume_id    = aws_ebs_volume.ebs-volume-1.id
   instance_id  = aws_instance.example.id
-  skip_destroy = true                            # skip destroy to avoid issues with terraform destroy
+  skip_destroy = true  # skip destroy to avoid issues with terraform destroy
 }
 

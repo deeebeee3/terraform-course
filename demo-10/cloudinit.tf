@@ -3,6 +3,7 @@
 data "template_cloudinit_config" "cloudinit-example" {
   gzip          = false
   base64_encode = false
+  # we are using plain text
 
   part {
     filename     = "init.cfg"
