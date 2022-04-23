@@ -154,3 +154,9 @@ like we did above...
 We can snapshot our EBS volumes
 
 If our whole infrasucture goes down we can bring it back up...
+
+---
+
+BUGFIX WHEN DESTROY NOT HAPPEN CLEANLY:
+
+I had the same problem. `terraform destroy` fails for the reason shown above. Then the terraform.tfstate file gets corrupted so I copy from the backup and run `terraform refresh`. Then I made the `stop_instance_before_detaching=true` changes to instance.tf, run `terraform refresh` and then re-ran `terraform destroy`.

@@ -26,6 +26,10 @@ resource "aws_volume_attachment" "ebs-volume-1-attachment" {
   device_name = "/dev/xvdh" # /dev/xvdh is the device name for the ebs volume
   volume_id   = aws_ebs_volume.ebs-volume-1.id
   instance_id = aws_instance.example.id
+
+  # this is necessary when it comes to destroying, otherwise destroy all resources won't happen cleanly
+  stop_instance_before_detaching = true 
+  skip_destroy = true
 }
 
 output "ip" {
