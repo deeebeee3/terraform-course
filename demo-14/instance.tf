@@ -12,6 +12,7 @@ resource "aws_instance" "example" {
   key_name = aws_key_pair.mykeypair.key_name
 
   # role:
+  # HERE WE ATTACH THE iam_instance_profile TO THE INSTANCE
   iam_instance_profile = aws_iam_instance_profile.s3-mybucket-role-instanceprofile.name
 }
 
