@@ -23,6 +23,9 @@ module "main-vpc" {
   }
 }
 
+
+# This is how you pass varibles to modules - you need to output the variable here
+# so it can be accessed and passed to another module - see comments in dev.tf and prod.tf files
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = module.main-vpc.vpc_id
