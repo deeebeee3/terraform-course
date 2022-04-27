@@ -1,0 +1,38 @@
+{
+  "version": 4,
+  "terraform_version": "1.1.9",
+  "serial": 1,
+  "lineage": "18e8be48-d6af-6623-efb7-1822f1ea7c27",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_ssm_parameter",
+      "name": "myparameter2",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allowed_pattern": "",
+            "arn": "arn:aws:ssm:eu-west-1:841848180286:parameter/myapp/myparameter",
+            "data_type": "text",
+            "description": "",
+            "id": "/myapp/myparameter",
+            "key_id": "",
+            "name": "/myapp/myparameter",
+            "overwrite": null,
+            "tags": null,
+            "tags_all": {},
+            "tier": "Standard",
+            "type": "String",
+            "value": "myvalue",
+            "version": 1
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA=="
+        }
+      ]
+    }
+  ]
+}
