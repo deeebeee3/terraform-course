@@ -44,6 +44,11 @@ EOF
 
 }
 
+
+# Important part here - we saying the instance itself needs access to 
+# ECS and the the instance needs to be able to download the docker image
+# from ECR... we also have have some log rules as at some point we might
+# want to push the logs to CloudWatch...
 resource "aws_iam_role_policy" "ecs-ec2-role-policy" {
 name   = "ecs-ec2-role-policy"
 role   = aws_iam_role.ecs-ec2-role.id
