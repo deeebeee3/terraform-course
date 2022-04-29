@@ -1,17 +1,17 @@
 # app
 
-data "template_file" "myapp-task-definition-template" {
-  template = file("templates/app.json.tpl")
-  vars = {
-    REPOSITORY_URL = replace(aws_ecr_repository.myapp.repository_url, "https://", "")
-  }
-}
-
+###
+### 1. ECS TASK DEFINITION
+###
 resource "aws_ecs_task_definition" "myapp-task-definition" {
   family                = "myapp"
-  container_definitions = data.template_file.myapp-task-definition-template.rendered
+  container_definitions = templatefile("templates/app.json.tpl", {
+    # here we're just removing the https:// from the repository url
+    REPOSITORY_URL = replace(aws_ecr_repository.myapp.repository_url, "https://", "")
+  })
 }
 
+# Load balancer
 resource "aws_elb" "myapp-elb" {
   name = "myapp-elb"
 
@@ -43,6 +43,10 @@ resource "aws_elb" "myapp-elb" {
   }
 }
 
+
+###
+### 2. ECS SERVICE DEFINITION
+###
 resource "aws_ecs_service" "myapp-service" {
   name            = "myapp"
   cluster         = aws_ecs_cluster.example-cluster.id
@@ -52,7 +56,7 @@ resource "aws_ecs_service" "myapp-service" {
   depends_on      = [aws_iam_policy_attachment.ecs-service-attach1]
 
   load_balancer {
-    elb_name       = aws_elb.myapp-elb.name
+    elb_name       = aws_elb.myapp-elb.name # Here is the load balancer
     container_name = "myapp"
     container_port = 3000
   }

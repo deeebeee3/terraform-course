@@ -9,7 +9,8 @@ resource "aws_launch_configuration" "ecs-example-launchconfig" {
   instance_type        = var.ECS_INSTANCE_TYPE # t2.micro
   key_name             = aws_key_pair.mykeypair.key_name
 
-  iam_instance_profile = aws_iam_instance_profile.ecs-ec2-role.id # Attach a role becuase this EC2 instance needs some extra permissions (mainly ECS and ECR permissions)
+  # Attach a role becuase this EC2 instance needs some extra permissions (mainly ECS and ECR permissions)
+  iam_instance_profile = aws_iam_instance_profile.ecs-ec2-role.id 
 
   security_groups      = [aws_security_group.ecs-securitygroup.id]
 

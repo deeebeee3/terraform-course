@@ -1,4 +1,5 @@
-# ecs ec2 role
+# 3 then we have another role - an ec2 role that were going to 
+# attach to our instance
 resource "aws_iam_role" "ecs-ec2-role" {
   name               = "ecs-ec2-role"
   assume_role_policy = <<EOF
@@ -19,11 +20,13 @@ EOF
 
 }
 
+# 4 then we attach the above role to the instance profile
 resource "aws_iam_instance_profile" "ecs-ec2-role" {
   name = "ecs-ec2-role"
   role = aws_iam_role.ecs-ec2-role.name
 }
 
+# 5 and its an ec2 role
 resource "aws_iam_role" "ecs-consul-server-role" {
   name = "ecs-consul-server-role"
   assume_role_policy = <<EOF
@@ -45,6 +48,7 @@ EOF
 }
 
 
+# 6 And here is the full policy...
 # Important part here - we saying the instance itself needs access to 
 # ECS and the the instance needs to be able to download the docker image
 # from ECR... we also have have some log rules as at some point we might
@@ -94,7 +98,7 @@ EOF
 
 }
 
-# ecs service role
+# 1 here we have an ecs service role
 resource "aws_iam_role" "ecs-service-role" {
 name = "ecs-service-role"
 assume_role_policy = <<EOF
@@ -115,6 +119,8 @@ EOF
 
 }
 
+# 2 here we attach that role to the service role maintained by amazon- the 
+# AmazonEC2ContainerServiceRole is just the managed policy for amazon ec2 container services
 resource "aws_iam_policy_attachment" "ecs-service-attach1" {
   name       = "ecs-service-attach1"
   roles      = [aws_iam_role.ecs-service-role.name]
